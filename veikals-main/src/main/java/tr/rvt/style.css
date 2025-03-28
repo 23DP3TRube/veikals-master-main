@@ -1,0 +1,9 @@
+.button {
+    -fx-background-color: gray;
+    -fx-text-fill: white;
+}
+
+.TextField {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}

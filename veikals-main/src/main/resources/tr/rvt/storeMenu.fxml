@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tr.rvt.StoreMenuController">
+    <children>
+        <Label text="Store Menu"/>
+        <Button text="View Items" onAction="#handleViewItems"/>
+        <Button text="Add to Cart" onAction="#handleAddToCart"/>
+        <Button text="View Cart" onAction="#handleViewCart"/>
+        <Button text="Add Balance" onAction="#handleAddBalance"/>
+        <Button text="Purchase" onAction="#handlePurchase"/>
+        <Button text="Logout" onAction="#handleLogout"/>
+    </children>
+</VBox>
