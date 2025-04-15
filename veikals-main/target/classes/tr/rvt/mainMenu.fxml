@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tr.rvt.MainMenuController">
+<VBox alignment="CENTER" prefHeight="297.0" prefWidth="366.0" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tr.rvt.MainMenuController">
     <children>
-        <Button  text="Register" onAction="#handleRegister"/>
-        <Button text="Login" onAction="#handleLogin"/>
-        <Button text="Exit" onAction="#handleExit"/>
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../target/classes/tr/rvt/Imgforfxml/1942640.jpeg" />
+         </image>
+      </ImageView>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sveicam jus musu veikala!" />
+        <Button onAction="#handleRegister" text="Register" />
+        <Button onAction="#handleLogin" text="Login" />
+        <Button onAction="#handleExit" text="Exit" />
     </children>
 </VBox>
