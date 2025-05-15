@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -12,7 +13,7 @@ public class RegisterController {
     @FXML
     private TextField usernameField;
     @FXML
-    private TextField passwordField;
+    private PasswordField passwordField;
 
     @FXML
     private void handleRegister() {
@@ -26,7 +27,7 @@ public class RegisterController {
         } else {
             User newUser = new User(username, password);
             App.getUsers().put(username, newUser);
-            App.saveUser(newUser); // This now saves all users with cart and balance
+            App.saveUser(newUser);
             alert.setTitle("Registration Successful");
             alert.setHeaderText("Welcome, " + username + "!");
             alert.setContentText("You have successfully registered.");

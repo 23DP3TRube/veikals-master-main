@@ -14,6 +14,7 @@ import javafx.scene.control.TextInputDialog;
 
 public class StoreMenuController {
 
+    // Parāda preču sarakstu ar kārtošanas un filtrēšanas iespējām
     @FXML
     private void handleViewItems() {
         List<String> sortOptions = List.of(
@@ -104,6 +105,7 @@ public class StoreMenuController {
         alert.showAndWait();
     }
 
+    // Pievieno preci grozam pēc ID
     @FXML
     private void handleAddToCart() {
         TextInputDialog dialog = new TextInputDialog();
@@ -119,7 +121,6 @@ public class StoreMenuController {
                     .findFirst()
                     .orElse(null);
                 if (item != null && item.quantity > 0) {
-                    // Check if already in cart, increase quantity if so
                     CartEntry entry = App.getCurrentUser().cart.stream()
                         .filter(e -> e.item.id == itemId)
                         .findFirst()
@@ -130,7 +131,7 @@ public class StoreMenuController {
                         App.getCurrentUser().cart.add(new CartEntry(item, 1));
                     }
                     item.quantity--;
-                    App.saveUser(App.getCurrentUser()); // Save after cart change
+                    App.saveUser(App.getCurrentUser());  
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText("Item Added");
@@ -145,6 +146,7 @@ public class StoreMenuController {
         });
     }
 
+    // Parāda groza saturu ar kārtošanas un filtrēšanas iespējām
     @FXML
     private void handleViewCart() {
         List<String> sortOptions = List.of(
@@ -240,6 +242,7 @@ public class StoreMenuController {
         alert.showAndWait();
     }
 
+    // Pievieno naudu lietotāja bilancei
     @FXML
     private void handleAddBalance() {
         TextInputDialog dialog = new TextInputDialog();
@@ -252,7 +255,7 @@ public class StoreMenuController {
                 double amount = Double.parseDouble(input);
                 if (amount > 0) {
                     App.getCurrentUser().balance += amount;
-                    App.saveUser(App.getCurrentUser()); // Save after balance change
+                    App.saveUser(App.getCurrentUser());
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText("Balance Updated");
@@ -267,6 +270,7 @@ public class StoreMenuController {
         });
     }
 
+    // Parāda lietotāja bilanci
     @FXML
     private void handleCheckBalance() {
         double balance = App.getCurrentUser().balance;
@@ -277,6 +281,7 @@ public class StoreMenuController {
         alert.showAndWait();
     }
 
+    // Veic pirkumu, ja pietiek bilances
     @FXML
     private void handlePurchase() {
         if (App.getCurrentUser().cart.isEmpty()) {
@@ -284,15 +289,14 @@ public class StoreMenuController {
             return;
         }
 
-        double total = 0;
-        for (CartEntry entry : App.getCurrentUser().cart) {
-            total += entry.item.price * entry.quantity;
-        }
+        double total = App.getCurrentUser().cart.stream()
+            .mapToDouble(entry -> entry.item.price * entry.quantity)
+            .sum();
 
         if (App.getCurrentUser().balance >= total) {
             App.getCurrentUser().balance -= total;
             App.getCurrentUser().cart.clear();
-            App.saveUser(App.getCurrentUser()); // Save after purchase
+            App.saveUser(App.getCurrentUser()); 
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Purchase Successful");
             alert.setHeaderText("Thank you for your purchase!");
@@ -303,12 +307,14 @@ public class StoreMenuController {
         }
     }
 
+    // Izrakstās no lietotāja konta
     @FXML
     private void handleLogout() throws IOException {
         App.setCurrentUser(null);
         App.setRoot("mainMenu");
     }
 
+    // Parāda preču kārtošanas iespējas
     @FXML
     private void handleSortItems() {
         List<String> options = List.of("A-Z", "Price", "Quantity", "ID");
@@ -319,7 +325,6 @@ public class StoreMenuController {
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-            // Ask for ascending/descending
             List<String> orderOptions = List.of("Ascending", "Descending");
             ChoiceDialog<String> orderDialog = new ChoiceDialog<>("Ascending", orderOptions);
             orderDialog.setTitle("Sort Order");
@@ -365,6 +370,7 @@ public class StoreMenuController {
         }
     }
 
+    // Parāda sakārtotu preču sarakstu
     private void showSortedItems(List<Item> items, String sortType) {
         StringBuilder itemsList = new StringBuilder("Items sorted by " + sortType + ":\n");
         for (Item item : items) {
@@ -378,6 +384,7 @@ public class StoreMenuController {
         alert.showAndWait();
     }
 
+    // Parāda kļūdas paziņojumu
     private void showError(String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
