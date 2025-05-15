@@ -24,7 +24,9 @@ public class RegisterController {
             alert.setHeaderText("Username already exists!");
             alert.setContentText("Please choose a different username.");
         } else {
-            App.getUsers().put(username, new User(username, password));
+            User newUser = new User(username, password);
+            App.getUsers().put(username, newUser);
+            App.saveUser(newUser);
             alert.setTitle("Registration Successful");
             alert.setHeaderText("Welcome, " + username + "!");
             alert.setContentText("You have successfully registered.");

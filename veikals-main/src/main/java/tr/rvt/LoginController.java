@@ -16,6 +16,7 @@ public class LoginController {
 
     @FXML
     private void handleLogin() throws IOException {
+        App.loadUsers(); // Ensure users are loaded from the file
         String username = usernameField.getText();
         String password = passwordField.getText();
         User user = App.getUsers().get(username);
