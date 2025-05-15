@@ -10,6 +10,7 @@
         <Label text="Store Menu"/>
         <Button text="View Items" onAction="#handleViewItems"/>
         <Button text="Add to Cart" onAction="#handleAddToCart"/>
+        <Button text="Remove from Cart" onAction="#handleRemoveFromCart"/>
         <Button text="View Cart" onAction="#handleViewCart"/>
         <Button text="Add Balance" onAction="#handleAddBalance"/>
         <Button text="Purchase" onAction="#handlePurchase"/>

@@ -146,6 +146,40 @@ public class StoreMenuController {
         });
     }
 
+    // Noņem preci no groza pēc ID
+    @FXML
+    private void handleRemoveFromCart() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Remove from Cart");
+        dialog.setHeaderText("Enter the item ID to remove from your cart:");
+        dialog.setContentText("Item ID:");
+
+        dialog.showAndWait().ifPresent(input -> {
+            try {
+                int itemId = Integer.parseInt(input);
+                List<CartEntry> cart = App.getCurrentUser().cart;
+                CartEntry entry = cart.stream()
+                        .filter(e -> e.item.id == itemId)
+                        .findFirst()
+                        .orElse(null);
+                if (entry != null) {
+                    entry.item.quantity += entry.quantity;
+                    cart.remove(entry);
+                    App.saveUser(App.getCurrentUser());
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Removed");
+                    alert.setHeaderText("Item Removed");
+                    alert.setContentText("Item removed from your cart.");
+                    alert.showAndWait();
+                } else {
+                    showError("Item not found in your cart.");
+                }
+            } catch (NumberFormatException e) {
+                showError("Please enter a valid number.");
+            }
+        });
+    }
+
     // Parāda groza saturu ar kārtošanas un filtrēšanas iespējām
     @FXML
     private void handleViewCart() {
