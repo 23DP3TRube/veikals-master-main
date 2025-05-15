@@ -76,6 +76,22 @@ public class StoreMenuController {
             }
         }
 
+        TextInputDialog filterDialog = new TextInputDialog();
+        filterDialog.setTitle("Filter Items");
+        filterDialog.setHeaderText("Enter a keyword, ID, or price to filter items (leave empty for no filter):");
+        filterDialog.setContentText("Filter:");
+        Optional<String> filterResult = filterDialog.showAndWait();
+        if (filterResult.isPresent() && !filterResult.get().trim().isEmpty()) {
+            String filter = filterResult.get().trim().toLowerCase();
+            itemsToShow = itemsToShow.stream()
+                .filter(item ->
+                    item.name.toLowerCase().contains(filter) ||
+                    String.valueOf(item.id).equals(filter) ||
+                    String.valueOf(item.price).equals(filter)
+                )
+                .collect(Collectors.toList());
+        }
+
         StringBuilder itemsList = new StringBuilder("Available items:\n");
         for (Item item : itemsToShow) {
             itemsList.append(String.format("ID: %d | %s | $%d | Qty: %d\n",
@@ -114,6 +130,7 @@ public class StoreMenuController {
                         App.getCurrentUser().cart.add(new CartEntry(item, 1));
                     }
                     item.quantity--;
+                    App.saveUser(App.getCurrentUser()); // Save after cart change
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText("Item Added");
@@ -191,6 +208,22 @@ public class StoreMenuController {
             }
         }
 
+        TextInputDialog filterDialog = new TextInputDialog();
+        filterDialog.setTitle("Filter Cart");
+        filterDialog.setHeaderText("Enter a keyword, ID, or price to filter cart items (leave empty for no filter):");
+        filterDialog.setContentText("Filter:");
+        Optional<String> filterResult = filterDialog.showAndWait();
+        if (filterResult.isPresent() && !filterResult.get().trim().isEmpty()) {
+            String filter = filterResult.get().trim().toLowerCase();
+            entriesToShow = entriesToShow.stream()
+                .filter(entry ->
+                    entry.item.name.toLowerCase().contains(filter) ||
+                    String.valueOf(entry.item.id).equals(filter) ||
+                    String.valueOf(entry.item.price).equals(filter)
+                )
+                .collect(Collectors.toList());
+        }
+
         StringBuilder cartList = new StringBuilder("Your cart:\n");
         if (entriesToShow.isEmpty()) {
             cartList.append("Cart is empty.");
@@ -219,6 +252,7 @@ public class StoreMenuController {
                 double amount = Double.parseDouble(input);
                 if (amount > 0) {
                     App.getCurrentUser().balance += amount;
+                    App.saveUser(App.getCurrentUser()); // Save after balance change
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText("Balance Updated");
@@ -231,6 +265,16 @@ public class StoreMenuController {
                 showError("Please enter a valid number.");
             }
         });
+    }
+
+    @FXML
+    private void handleCheckBalance() {
+        double balance = App.getCurrentUser().balance;
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Balance");
+        alert.setHeaderText("Your Balance");
+        alert.setContentText(String.format("Your current balance is $%.2f", balance));
+        alert.showAndWait();
     }
 
     @FXML
@@ -248,6 +292,7 @@ public class StoreMenuController {
         if (App.getCurrentUser().balance >= total) {
             App.getCurrentUser().balance -= total;
             App.getCurrentUser().cart.clear();
+            App.saveUser(App.getCurrentUser()); // Save after purchase
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Purchase Successful");
             alert.setHeaderText("Thank you for your purchase!");

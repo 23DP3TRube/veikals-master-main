@@ -73,9 +73,36 @@ public class App extends Application {
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 2) {
-                    users.put(parts[0], new User(parts[0], parts[1]));
+                String[] parts = line.split(",", 4);
+                if (parts.length >= 2) {
+                    String username = parts[0];
+                    String password = parts[1];
+                    double balance = 0.0;
+                    if (parts.length >= 3 && !parts[2].isEmpty()) {
+                        try {
+                            balance = Double.parseDouble(parts[2]);
+                        } catch (NumberFormatException ignored) {}
+                    }
+                    User user = new User(username, password);
+                    user.balance = balance;
+                    // Load cart if present
+                    if (parts.length == 4 && !parts[3].isEmpty()) {
+                        String[] cartEntries = parts[3].split(";");
+                        for (String entry : cartEntries) {
+                            String[] itemParts = entry.split(":");
+                            if (itemParts.length == 2) {
+                                try {
+                                    int itemId = Integer.parseInt(itemParts[0]);
+                                    int qty = Integer.parseInt(itemParts[1]);
+                                    Item item = items.stream().filter(i -> i.id == itemId).findFirst().orElse(null);
+                                    if (item != null && qty > 0) {
+                                        user.cart.add(new CartEntry(item, qty));
+                                    }
+                                } catch (NumberFormatException ignored) {}
+                            }
+                        }
+                    }
+                    users.put(username, user);
                 }
             }
         } catch (IOException e) {
@@ -83,12 +110,27 @@ public class App extends Application {
         }
     }
 
-    public static void saveUser(User user) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) {
-            writer.write(user.username + "," + user.password);
-            writer.newLine();
+    public static void saveAllUsers() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, false))) {
+            for (User user : users.values()) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(user.username).append(",").append(user.password).append(",").append(user.balance).append(",");
+                // Save cart as itemId:qty;itemId:qty
+                for (int i = 0; i < user.cart.size(); i++) {
+                    CartEntry entry = user.cart.get(i);
+                    sb.append(entry.item.id).append(":").append(entry.quantity);
+                    if (i < user.cart.size() - 1) sb.append(";");
+                }
+                writer.write(sb.toString());
+                writer.newLine();
+            }
         } catch (IOException e) {
-            System.err.println("Error saving user: " + e.getMessage());
+            System.err.println("Error saving users: " + e.getMessage());
         }
+    }
+
+    public static void saveUser(User user) {
+        users.put(user.username, user);
+        saveAllUsers();
     }
 }

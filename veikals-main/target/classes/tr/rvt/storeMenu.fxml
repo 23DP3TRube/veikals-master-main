@@ -12,6 +12,7 @@
         <Button text="Add to Cart" onAction="#handleAddToCart"/>
         <Button text="View Cart" onAction="#handleViewCart"/>
         <Button text="Add Balance" onAction="#handleAddBalance"/>
+        <Button text="Check Balance" onAction="#handleCheckBalance"/>
         <Button text="Purchase" onAction="#handlePurchase"/>
         <Button text="Logout" onAction="#handleLogout"/>
     </children>

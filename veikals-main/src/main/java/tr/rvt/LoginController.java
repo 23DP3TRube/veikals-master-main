@@ -23,6 +23,7 @@ public class LoginController {
         Alert alert = new Alert(AlertType.INFORMATION);
         if (user != null && user.password.equals(password)) {
             App.setCurrentUser(user);
+            App.saveUser(user); // Save on login to persist any changes
             alert.setTitle("Login Successful");
             alert.setHeaderText("Welcome, " + username + "!");
             alert.setContentText("You have successfully logged in.");

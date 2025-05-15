@@ -26,7 +26,7 @@ public class RegisterController {
         } else {
             User newUser = new User(username, password);
             App.getUsers().put(username, newUser);
-            App.saveUser(newUser);
+            App.saveUser(newUser); // This now saves all users with cart and balance
             alert.setTitle("Registration Successful");
             alert.setHeaderText("Welcome, " + username + "!");
             alert.setContentText("You have successfully registered.");
