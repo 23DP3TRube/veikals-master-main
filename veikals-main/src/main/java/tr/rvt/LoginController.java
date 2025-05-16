@@ -21,20 +21,23 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         User user = App.getUsers().get(username);
-        Alert alert = new Alert(AlertType.INFORMATION);
+        Alert alert;
         if (user != null && user.password.equals(password)) {
             App.setCurrentUser(user);
             App.saveUser(user); // Save on login to persist any changes
+            alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Login Successful");
             alert.setHeaderText("Welcome, " + username + "!");
             alert.setContentText("You have successfully logged in.");
+            alert.showAndWait();
             App.setRoot("storeMenu");
         } else {
+            alert = new Alert(AlertType.ERROR);
             alert.setTitle("Login Failed");
             alert.setHeaderText("Invalid username or password!");
             alert.setContentText("Please try again.");
+            alert.showAndWait();
         }
-        alert.showAndWait();
     }
 
     @FXML

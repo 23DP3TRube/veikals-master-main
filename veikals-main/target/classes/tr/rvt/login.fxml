@@ -11,7 +11,7 @@
         <Label text="Username" />
         <TextField fx:id="usernameField" styleClass="TextField" />
         <Label text="Password" />
-        <PasswordField fx:id="passwordField" promptText="Password" />
+        <PasswordField fx:id="passwordField" styleClass="TextField" />
         <Button onAction="#handleLogin" text="Login" />
         <Button onAction="#handleBack" text="Back" />
     </children>

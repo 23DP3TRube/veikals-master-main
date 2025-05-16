@@ -38,14 +38,15 @@ public class App extends Application {
         stage.show();
     }
 
-    // Maina skatu uz citu FXML
+    // Maina skatu uz citu FXML failu
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
-    // Ielādē FXML failu
+    // Ielādē FXML failu no resursiem
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        // Lieto absolūto ceļu uz resursu
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/tr/rvt/" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
@@ -110,7 +111,7 @@ public class App extends Application {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error loading users: " + e.getMessage());
+            System.err.println("Kļūda ielādējot lietotājus: " + e.getMessage());
         }
     }
 
@@ -130,7 +131,7 @@ public class App extends Application {
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.err.println("Error saving users: " + e.getMessage());
+            System.err.println("Kļūda saglabājot lietotājus: " + e.getMessage());
         }
     }
 
@@ -140,7 +141,7 @@ public class App extends Application {
         saveAllUsers();
     }
 
-    // Palīgfunkcija CSV lauka apstrādei
+    // Palīgfunkcija CSV lauka apstrādei    
     private static String escapeCsv(String field) {
         if (field == null) return "";
         if (field.contains(",") || field.contains("\"")) {

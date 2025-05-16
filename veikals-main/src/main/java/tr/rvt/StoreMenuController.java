@@ -76,7 +76,7 @@ public class StoreMenuController {
                     break;
             }
         }
-
+        // Filtrē preces pēc nosaukuma, ID vai cenas
         TextInputDialog filterDialog = new TextInputDialog();
         filterDialog.setTitle("Filter Items");
         filterDialog.setHeaderText("Enter a keyword, ID, or price to filter items (leave empty for no filter):");
@@ -243,7 +243,8 @@ public class StoreMenuController {
                     break;
             }
         }
-
+        // Filtrē preces pēc nosaukuma, ID vai cenas
+        
         TextInputDialog filterDialog = new TextInputDialog();
         filterDialog.setTitle("Filter Cart");
         filterDialog.setHeaderText("Enter a keyword, ID, or price to filter cart items (leave empty for no filter):");
